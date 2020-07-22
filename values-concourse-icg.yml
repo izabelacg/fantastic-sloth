@@ -8,7 +8,7 @@ secrets:
 
 web:
   replicas: 2
-  localAuth: 
+  localAuth:
     enabled: true
   additionalVolumes:
     - name: dsdsocket
@@ -29,7 +29,7 @@ concourse:
     metrics:
       attribute: "environment:cheetara"
     datadog:
-      enabled: true       
+      enabled: true
       agentHost: unix
       agentPort: ///var/run/datadog/dsd.socket
       prefix: "concourse.loadtest"
@@ -38,7 +38,7 @@ datadog:
   datadog:
     useDogStatsDSocketVolume: true
     apiKey: DATADOG_API_KEY
-    appKey: DATADOG_APP_KEYs
+    appKey: DATADOG_APP_KEY
     processAgentEnabled: true
     tags:
       - "env:cheetara"

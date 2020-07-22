@@ -7,7 +7,7 @@ secrets:
   localUsers: admin:admin,guest:guest
 
 web:
-  localAuth: 
+  localAuth:
     enabled: true
   additionalVolumes:
     - name: dsdsocket

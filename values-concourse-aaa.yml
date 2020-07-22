@@ -8,7 +8,7 @@ secrets:
 
 web:
   replicas: 2
-  localAuth: 
+  localAuth:
     enabled: true
   additionalVolumes:
     - name: dsdsocket
@@ -36,7 +36,7 @@ concourse:
     metrics:
       attribute: "environment:aaa"
     datadog:
-      enabled: true       
+      enabled: true
       agentHost: unix
       agentPort: ///var/run/datadog/dsd.socket
       prefix: "concourse.loadtest"
