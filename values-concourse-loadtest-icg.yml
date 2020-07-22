@@ -1,0 +1,43 @@
+# concourse-loadtest-icg
+
+image: concourse/concourse
+imageTag: "5.8.1"
+
+secrets:
+  localUsers: admin:admin,guest:guest
+
+web:
+  localAuth: 
+    enabled: true
+  additionalVolumes:
+    - name: dsdsocket
+      hostPath:
+        path: /var/run/datadog
+  additionalVolumeMounts:
+    - name: dsdsocket
+      mountPath: /var/run/datadog
+
+concourse:
+  web:
+    auth:
+      mainTeam:
+        localUser: admin
+    metrics:
+      attribute: "environment:stress"
+    datadog:
+      enabled: true
+      # agentHostUseHostIP: false        
+      agentHost: unix
+      agentPort: ///var/run/datadog/dsd.socket
+      prefix: "concourse.loadtest"
+
+datadog:
+  datadog:
+    useDogStatsDSocketVolume: true
+    apiKey: DATADOG_API_KEY
+    appKey: DATADOG_APP_KEY
+    processAgentEnabled: true
+    tags:
+      - "env:stresstest"
+    kubeStateMetrics:
+      enabled: false

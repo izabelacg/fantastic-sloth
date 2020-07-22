@@ -1,0 +1,65 @@
+# concourse-aaa
+
+image: concourse/concourse
+imageTag: "5.8.1"
+
+secrets:
+  localUsers: admin:admin,guest:guest
+
+web:
+  replicas: 2
+  localAuth: 
+    enabled: true
+  additionalVolumes:
+    - name: dsdsocket
+      hostPath:
+        path: /var/run/datadog
+  additionalVolumeMounts:
+    - name: dsdsocket
+      mountPath: /var/run/datadog
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "1000m"
+      memory: "4Gi"
+
+worker:
+  replicas: 10
+
+concourse:
+  web:
+    auth:
+      mainTeam:
+        localUser: admin
+    metrics:
+      attribute: "environment:aaa"
+    datadog:
+      enabled: true       
+      agentHost: unix
+      agentPort: ///var/run/datadog/dsd.socket
+      prefix: "concourse.loadtest"
+
+datadog:
+  datadog:
+    useDogStatsDSocketVolume: true
+    apiKey: DATADOG_API_KEY
+    appKey: DATADOG_APP_KEY
+    processAgentEnabled: true
+    tags:
+      - "env:aaa"
+    kubeStateMetrics:
+      enabled: false
+
+
+postgresql:
+  persistence:
+    size: 2Gi
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 2Gi
