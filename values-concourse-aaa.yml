@@ -19,14 +19,15 @@ web:
       mountPath: /var/run/datadog
   resources:
     requests:
-      cpu: "100m"
-      memory: "128Mi"
+      cpu: "1000m"
+      memory: "1Gi"
     limits:
       cpu: "1000m"
-      memory: "4Gi"
+      memory: "1Gi"
 
 worker:
   replicas: 10
+  hardAntiAffinity: true
 
 concourse:
   web:
@@ -54,12 +55,10 @@ datadog:
 
 
 postgresql:
-  persistence:
-    size: 2Gi
   resources:
     requests:
-      cpu: 250m
-      memory: 256Mi
+      cpu: 1000m
+      memory: 2Gi
     limits:
-      cpu: 500m
+      cpu: 1000m
       memory: 2Gi
