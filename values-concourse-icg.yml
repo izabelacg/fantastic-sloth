@@ -7,7 +7,7 @@ secrets:
   localUsers: admin:admin,guest:guest
 
 web:
-  replicas: 2
+  replicas: 1
   localAuth:
     enabled: true
   additionalVolumes:
@@ -19,7 +19,7 @@ web:
       mountPath: /var/run/datadog
 
 worker:
-  replicas: 10
+  replicas: 0
 
 concourse:
   web:

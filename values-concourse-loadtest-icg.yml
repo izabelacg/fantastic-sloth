@@ -7,6 +7,7 @@ secrets:
   localUsers: admin:admin,guest:guest
 
 web:
+  replicas: 1
   localAuth:
     enabled: true
   additionalVolumes:
@@ -17,6 +18,9 @@ web:
     - name: dsdsocket
       mountPath: /var/run/datadog
 
+worker:
+  replicas: 0
+
 concourse:
   web:
     auth:
@@ -26,7 +30,7 @@ concourse:
       attribute: "environment:stress"
     datadog:
       enabled: true
-      # agentHostUseHostIP: false        
+      # agentHostUseHostIP: false
       agentHost: unix
       agentPort: ///var/run/datadog/dsd.socket
       prefix: "concourse.loadtest"
