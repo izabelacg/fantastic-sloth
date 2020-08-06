@@ -41,7 +41,7 @@ concourse:
       agentHost: unix
       agentPort: ///var/run/datadog/dsd.socket
       prefix: "concourse.loadtest"
-
+    externalUrl: https://workaround.concourse-ci.org
 datadog:
   datadog:
     useDogStatsDSocketVolume: true
@@ -62,3 +62,6 @@ postgresql:
     limits:
       cpu: 1000m
       memory: 2Gi
+  postgresqlPostgresPassword: ANY_PASSWORD
+  postgresqlConfiguration:
+    sharedPreloadLibraries: "pg_stat_statements"
