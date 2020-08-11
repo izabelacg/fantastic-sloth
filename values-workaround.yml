@@ -41,7 +41,11 @@ concourse:
       agentHost: unix
       agentPort: ///var/run/datadog/dsd.socket
       prefix: "concourse.workaround"
-    externalUrl: https://workaround.concourse-ci.org
+    # externalUrl: https://workaround.concourse-ci.org
+    containerPlacementStrategy: fewest-build-containers
+  worker:
+    baggageclaim:
+      driver: overlay
 datadog:
   datadog:
     useDogStatsDSocketVolume: true
