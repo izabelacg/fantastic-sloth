@@ -34,10 +34,18 @@ Attempts to reproduce Concourse state described in the issue [#5404](https://git
 
 1. Release/Deployment named `workaround`
 
-    - Chart: concourse-11.4.0
+    - Chart: concourse-11.4.1
     - Passing the following configuration to override values in the chart: [values-workaround.yml](values-workaround.yml)
     - Datadog dashboard direct [link](https://p.datadoghq.com/sb/2x0hq9m0hhctg8bs-8ea44961896ba6e7f04bb84a172cc88f)
     - Datadog dashboard direct for system stats [link](https://p.datadoghq.com/sb/2x0hq9m0hhctg8bs-5ebd02a1fe0b800b883b05c805807c3a)
+    - Using newer version of Postgresql chart:
+
+    ```yaml
+    - name: postgresql
+      version: 8.6.4
+      repository: https://kubernetes-charts.storage.googleapis.com/
+      condition: postgresql.enabled
+    ```
 
 ## Useful commands:
 
@@ -50,10 +58,8 @@ helm list
 
 # Install release
 
-export RELEASE_NAME="concourse-icg"
+export RELEASE_NAME="workaround"
 export CHART=concourse-chart
-export DATADOG_API_KEY=
-export DATADOG_APP_KEY=
 
 helm install --wait --name $RELEASE_NAME --namespace $RELEASE_NAME --values values-$RELEASE_NAME.yml $CHART
 
@@ -65,9 +71,11 @@ kubectl port-forward --namespace $RELEASE_NAME $POD_NAME 8080:8080
 # Delete release
 
 helm delete $RELEASE_NAME
-helm del --purge $RELEASE_NAME
-k delete namespace $RELEASE_NAME-main
+helm del --purge $RELEASE_NAME && \
+k delete pvc -l app=$RELEASE_NAME-worker && \
+k delete namespace $RELEASE_NAME-main && \
 k delete namespace $RELEASE_NAME
-k delete pvc -l app=$RELEASE_NAME-worker #according to https://github.com/concourse/concourse-chart/blob/master/README.md#cleanup-orphaned-persistent-volumes
+ 
+#according to https://github.com/concourse/concourse-chart/blob/master/README.md#cleanup-orphaned-persistent-volumes
 
 ```

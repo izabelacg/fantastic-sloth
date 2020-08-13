@@ -69,4 +69,8 @@ postgresql:
   postgresqlConfiguration: {"sharedPreloadLibraries": "'pg_stat_statements'", "listenAddresses": "'*'"}
   postgresqlUsername: "postgres"
   postgresqlPassword: A_PASSWORD
+  persistence:
+    size: 64Gi
+  shmVolume:
+    enabled: true
   # postgresqlPostgresPassword:
