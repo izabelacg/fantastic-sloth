@@ -31,13 +31,13 @@ Attempts to reproduce Concourse state described in the issue [#5404](https://git
 
     - Chart: concourse-11.4.0
     - Passing the following configuration to override values in the chart: [values-concourse-aaa.yml](values-concourse-aaa.yml)
-    - Datadog dashboard direct [link](https://p.datadoghq.com/sb/2x0hq9m0hhctg8bs-8ea44961896ba6e7f04bb84a172cc88f)
-    - Datadog dashboard direct for system stats [link](https://p.datadoghq.com/sb/2x0hq9m0hhctg8bs-5ebd02a1fe0b800b883b05c805807c3a)
 
 1. Release/Deployment named `workaround`
 
     - Chart: concourse-11.4.0
     - Passing the following configuration to override values in the chart: [values-workaround.yml](values-workaround.yml)
+    - Datadog dashboard direct [link](https://p.datadoghq.com/sb/2x0hq9m0hhctg8bs-8ea44961896ba6e7f04bb84a172cc88f)
+    - Datadog dashboard direct for system stats [link](https://p.datadoghq.com/sb/2x0hq9m0hhctg8bs-5ebd02a1fe0b800b883b05c805807c3a)
 
 ## Useful commands:
 
