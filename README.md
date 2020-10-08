@@ -65,6 +65,22 @@ k delete namespace $RELEASE_NAME
 
 ```
 
+If using *helm3*:
+
+```bash
+# Install release
+
+helm install $RELEASE_NAME --namespace $RELEASE_NAME --values values-$RELEASE_NAME.yml $CHART --create-namespace --dependency-update
+
+# Delete release
+
+helm delete $RELEASE_NAME
+k delete pvc -l release=$RELEASE_NAME && \
+k delete namespace $RELEASE_NAME-main && \
+k delete namespace $RELEASE_NAME
+
+```
+
 ## Steps to reset the PostgreSQL Superuser Password
 
 For some reason, configuring the chart parameter `postgresqlPostgresPassword` _won't_ actually set the password for 
