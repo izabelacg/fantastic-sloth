@@ -64,3 +64,21 @@ k delete namespace $RELEASE_NAME
 #according to https://github.com/concourse/concourse-chart/blob/master/README.md#cleanup-orphaned-persistent-volumes
 
 ```
+
+## Steps to reset the PostgreSQL Superuser Password
+
+For some reason, configuring the chart parameter `postgresqlPostgresPassword` _won't_ actually set the password for 
+the superuser `postgres` (despite [documentation](https://github.com/bitnami/charts/blob/60e3c4ca54f28c27c5d6d1aa9ac6650f4cd56fcd/bitnami/postgresql/values.yaml#L134) 
+saying it does so). In order to set a password for the `postgres` user, we can modify and follow some of the instructions from [here](https://docs.bitnami.com/aws/infrastructure/postgresql/administration/change-reset-password/).
+
+```bash
+sed -ibak 's/^\([^#]*\)md5/\1trust/g' /opt/bitnami/postgresql/conf/pg_hba.conf
+pg_ctl reload
+
+psql -U postgres
+alter user postgres with password 'NEW_PASSWORD';
+\q
+
+sed -i 's/^\([^#]*\)trust/\1md5/g' /opt/bitnami/postgresql/conf/pg_hba.conf
+pg_ctl reload
+```
