@@ -76,6 +76,7 @@ helm install $RELEASE_NAME --namespace $RELEASE_NAME --values values-$RELEASE_NA
 
 helm delete $RELEASE_NAME
 k delete pvc -l release=$RELEASE_NAME && \
+k delete pvc data-$RELEASE_NAME-postgresql-0 --namespace $RELEASE_NAME && \
 k delete namespace $RELEASE_NAME-main && \
 k delete namespace $RELEASE_NAME
 
