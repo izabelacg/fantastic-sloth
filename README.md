@@ -5,7 +5,7 @@ Attempt to reproduce Concourse state described in the issue [#5404](https://gith
 - Using the [helm chart](https://github.com/concourse/concourse-chart) to deploy Concourse
 - Deploying it to `cluster-1` ([See](https://github.com/concourse/hush-house#gathering-acccess-to-the-cluster) for gathering access to the cluster)
 - Sending metrics to Datadog (using personal free account)
-	* Added the following to [requirements.yaml](https://github.com/concourse/concourse-chart/blob/master/requirements.yaml):
+	* If using *helm2*, add the following to [requirements.yaml](https://github.com/concourse/concourse-chart/blob/cd027c173b443b5e1b1ab32598d0b293f16b6591/requirements.yaml#L1). If using *helm3*, add the following to [Chart.yaml](https://github.com/concourse/concourse-chart/blob/88a125901beb50c1f4f8ffbcd6ff5e4379c26517/Chart.yaml#L16):
 
 	```yaml
     - name: datadog
@@ -34,6 +34,8 @@ Attempt to reproduce Concourse state described in the issue [#5404](https://gith
 
 ## Useful commands:
 
+If using *helm2*:
+
 ```bash
 gcloud container clusters get-credentials cluster-1
 
@@ -57,7 +59,8 @@ kubectl port-forward --namespace $RELEASE_NAME $POD_NAME 8080:8080
 
 helm delete $RELEASE_NAME
 helm del --purge $RELEASE_NAME && \
-k delete pvc -l app=$RELEASE_NAME-worker && \
+k delete pvc -l app=$RELEASE_NAME-worker --namespace $RELEASE_NAME && \
+k delete pvc data-$RELEASE_NAME-postgresql-0 --namespace $RELEASE_NAME && \
 k delete namespace $RELEASE_NAME-main && \
 k delete namespace $RELEASE_NAME
  
