@@ -34,6 +34,14 @@ Attempt to reproduce Concourse state described in the issue [#5404](https://gith
 
 ## Useful commands:
 
+To get an external ip to access Concourse:
+
+```bash
+kubectl expose deployment $RELEASE_NAME-web --port=80 --target-port=8080 --name=web-external --type=LoadBalancer -n $RELEASE_NAME
+
+kubectl get service web-external -n $RELEASE_NAME -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
+```
+
 If using *helm2*:
 
 ```bash
@@ -59,10 +67,10 @@ kubectl port-forward --namespace $RELEASE_NAME $POD_NAME 8080:8080
 
 helm delete $RELEASE_NAME
 helm del --purge $RELEASE_NAME && \
-k delete pvc -l app=$RELEASE_NAME-worker --namespace $RELEASE_NAME && \
-k delete pvc data-$RELEASE_NAME-postgresql-0 --namespace $RELEASE_NAME && \
-k delete namespace $RELEASE_NAME-main && \
-k delete namespace $RELEASE_NAME
+kubectl delete pvc -l app=$RELEASE_NAME-worker --namespace $RELEASE_NAME && \
+kubectl delete pvc data-$RELEASE_NAME-postgresql-0 --namespace $RELEASE_NAME && \
+kubectl delete namespace $RELEASE_NAME-main && \
+kubectl delete namespace $RELEASE_NAME
  
 #according to https://github.com/concourse/concourse-chart/blob/master/README.md#cleanup-orphaned-persistent-volumes
 
@@ -78,10 +86,10 @@ helm install $RELEASE_NAME --namespace $RELEASE_NAME --values values-$RELEASE_NA
 # Delete release
 
 helm delete $RELEASE_NAME
-k delete pvc -l release=$RELEASE_NAME && \
-k delete pvc data-$RELEASE_NAME-postgresql-0 --namespace $RELEASE_NAME && \
-k delete namespace $RELEASE_NAME-main && \
-k delete namespace $RELEASE_NAME
+kubectl delete pvc -l release=$RELEASE_NAME && \
+kubectl delete pvc data-$RELEASE_NAME-postgresql-0 --namespace $RELEASE_NAME && \
+kubectl delete namespace $RELEASE_NAME-main && \
+kubectl delete namespace $RELEASE_NAME
 
 ```
 

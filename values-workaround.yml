@@ -1,13 +1,13 @@
 # workaround
 
 image: concourse/concourse
-imageTag: "5.8.1"
+# imageTag: "5.8.1"
 
 secrets:
   localUsers: admin:admin,guest:guest
 
 web:
-  replicas: 2
+  replicas: 1
   localAuth:
     enabled: true
   additionalVolumes:
@@ -17,16 +17,9 @@ web:
   additionalVolumeMounts:
     - name: dsdsocket
       mountPath: /var/run/datadog
-  resources:
-    requests:
-      cpu: "1000m"
-      memory: "1Gi"
-    limits:
-      cpu: "1000m"
-      memory: "1Gi"
 
 worker:
-  replicas: 10
+  replicas: 2
   hardAntiAffinity: true
 
 concourse:
@@ -43,6 +36,9 @@ concourse:
       prefix: "concourse.workaround"
     # externalUrl: https://workaround.concourse-ci.org
     containerPlacementStrategy: fewest-build-containers
+    service:
+      api: 
+        type: NodePort
   worker:
     baggageclaim:
       driver: overlay
@@ -59,18 +55,11 @@ datadog:
 
 
 postgresql:
-  resources:
-    requests:
-      cpu: 1000m
-      memory: 2Gi
-    limits:
-      cpu: 1000m
-      memory: 2Gi
   postgresqlConfiguration: {"sharedPreloadLibraries": "'pg_stat_statements'", "listenAddresses": "'*'"}
   postgresqlUsername: "concourse"
   postgresqlPassword: "concourse"
   postgresqlPostgresPassword: A_PASSWORD
-  persistence:
-    size: 64Gi
-  shmVolume:
-    enabled: true
+  # persistence:
+  #   size: 16Gi
+  # shmVolume:
+  #   enabled: true
